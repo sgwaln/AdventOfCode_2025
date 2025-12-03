@@ -19,8 +19,6 @@ try:
                     
                     # For the number to be repeated, it has to have total even number of digits
                     num_digits = len(str(num))
-                    if num_digits % 2 != 0:
-                        continue
 
                     # repeated number are always divisable by the number and result in a leading one, zeros and a one
                     # i.e. 1188511885 / 11885 = 100001, where the resultant is one digit longer then the repition
@@ -47,7 +45,12 @@ try:
                     # i.e. 10101 tests for n = 3, and len(n) = 2 (number of zeros between ones + 1)
                     # i.e. 1001001 test for n = 3, len(n) = 3
                     # 1010101 test for n = 4, and len(n) = 2
+                    # 001001 test for n = 2, and len(n) = 3 in len(m) = 6
 
+                    # This still has issues with len(m) is odd? say 999? Is that an invalid code?
+
+                    for n in range(2,num_digits,2):
+                        # This is checking for "0"*n + 1 + "0"*n + 1
                     
 
 except Exception as e:
