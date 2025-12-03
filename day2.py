@@ -52,6 +52,25 @@ try:
                     for n in range(2,num_digits,2):
                         # This is checking for "0"*n + 1 + "0"*n + 1
                     
+                    # I've read a little coding theory and I think I understand how to solve the general case
+                    # I have a polynomical S where S = R + R*x^k where it repeats n times and R is degree k (k long - 1)
+                    # i.e. n = 2, S = R+R*x^k = R(x^k + 1)
+                    # i.e. n = 3, S = R+R*x^k+R*x^2k = R(x^2k + x^k + 1)
+                    # i = 4, S = R + R*x^k + R*x^2k + R*x^3k = R * (x^3k + x^2k + x^k + 1)
+                    # Therefor S is divisible by the n (n>=1) summed terms of x^2i where i = 0,1,2,...,k then S repeats n times, not sure if that made sense.
+                    # basicly S % (x^k + 1) == 0 then repeats twice,
+                    # if S % (x^2k + x^k + 1) == 0, then repeates treece
+                    # note k would be N (len(S), or degree of S) / n, k = N/n => n = N/k
+                    # so for a second degree S, N = 2, k = 2, then n = 1 (trivial), k = 1, then n = 2
+                    # no, the values of k I have to test are floor((N+1)/2) and k is a divsor of N (N % k == 0)
+
+                    # TODO
+                        # Turn input into polynomial
+                        # Find degree, and values of k and n
+                        # For each k and n, see if polynomial is divisible with zero remainder by the sum of n terms of x^2i, where i = 0,1,2..,k
+                        # If divisiable, add R to the total
+
+                        pass
 
 except Exception as e:
     print(f"An error occurred: {e}")
