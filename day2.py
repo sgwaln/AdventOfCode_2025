@@ -144,6 +144,10 @@ def poly_divide(dividend, divisor):
 
 total = 0
 
+print("-"*60)
+print(f"{" "*10} TOTAL: {total}")
+print("-"*60)
+
 try:
     with open(file_path, 'r') as file:
         for line in file:
@@ -187,4 +191,6 @@ try:
 except Exception as e:
     print(f"An error occurred: {e}")
 
-print(total)
+print("-"*60)
+print(f"{" "*10} TOTAL: {total}")
+print("-"*60)
