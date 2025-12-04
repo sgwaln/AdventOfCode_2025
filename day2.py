@@ -1,8 +1,5 @@
 file_path = "day2_input.txt"
 
-total = 0
-total_2 = 0
-
 def strip_leading_zeros(poly):
     """Remove leading zeros from polynomial"""
     while len(poly) > 1 and poly[0] == 0:
@@ -145,132 +142,7 @@ def poly_divide(dividend, divisor):
     
     return quotient, remainder
 
-
-def test_poly_divide():
-    """Test cases for polynomial division"""
-    
-    print("=" * 60)
-    print("POLYNOMIAL DIVISION TEST CASES")
-    print("=" * 60)
-    
-    # Test 1: Simple division with no remainder
-    print("\nTest 1: (x^2 - 1) / (x - 1)")
-    print("Expected: Quotient = [1, 1] (x + 1), Remainder = [0]")
-    dividend = [1, 0, -1]  # x^2 - 1
-    divisor = [1, -1]       # x - 1
-    q, r = poly_divide(dividend, divisor)
-    print(f"Result:   Quotient = {q}, Remainder = {r}")
-    print("PASS" if (close_enough(q, [1, 1]) and close_enough(r, [0])) else "FAIL")
-    
-    # Test 2: Division with remainder
-    print("\nTest 2: (x^2 + 3x + 5) / (x + 1)")
-    print("Expected: Quotient = [1, 2] (x + 2), Remainder = [3]")
-    dividend = [1, 3, 5]   # x^2 + 3x + 5
-    divisor = [1, 1]       # x + 1
-    q, r = poly_divide(dividend, divisor)
-    print(f"Result:   Quotient = {q}, Remainder = {r}")
-    print("PASS" if (close_enough(q, [1, 2]) and close_enough(r, [3])) else "FAIL")
-    
-    # Test 3: Dividend degree < divisor degree
-    print("\nTest 3: (x + 1) / (x^2 + 1)")
-    print("Expected: Quotient = [0], Remainder = [1, 1]")
-    dividend = [1, 1]      # x + 1
-    divisor = [1, 0, 1]    # x^2 + 1
-    q, r = poly_divide(dividend, divisor)
-    print(f"Result:   Quotient = {q}, Remainder = {r}")
-    print("PASS" if (close_enough(q, [0]) and close_enough(r, [1, 1])) else "FAIL")
-    
-    # Test 4: Division by constant
-    print("\nTest 4: (2x^2 + 4x + 6) / (2)")
-    print("Expected: Quotient = [1, 2, 3] (x^2 + 2x + 3), Remainder = [0]")
-    dividend = [2, 4, 6]   # 2x^2 + 4x + 6
-    divisor = [2]          # 2
-    q, r = poly_divide(dividend, divisor)
-    print(f"Result:   Quotient = {q}, Remainder = {r}")
-    print("PASS" if (close_enough(q, [1, 2, 3]) and close_enough(r, [0])) else "FAIL")
-    
-    # Test 5: Division resulting in constant quotient
-    print("\nTest 5: (3x + 6) / (x + 2)")
-    print("Expected: Quotient = [3], Remainder = [0]")
-    dividend = [3, 6]      # 3x + 6
-    divisor = [1, 2]       # x + 2
-    q, r = poly_divide(dividend, divisor)
-    print(f"Result:   Quotient = {q}, Remainder = {r}")
-    print("PASS" if (close_enough(q, [3]) and close_enough(r, [0])) else "FAIL")
-    
-    # Test 6: Higher degree polynomial
-    print("\nTest 6: (x^3 + 2x^2 - 5x - 6) / (x + 1)")
-    print("Expected: Quotient = [1, 1, -6] (x^2 + x - 6), Remainder = [0]")
-    dividend = [1, 2, -5, -6]  # x^3 + 2x^2 - 5x - 6
-    divisor = [1, 1]           # x + 1
-    q, r = poly_divide(dividend, divisor)
-    print(f"Result:   Quotient = {q}, Remainder = {r}")
-    print("PASS" if (close_enough(q, [1, 1, -6]) and close_enough(r, [0])) else "FAIL")
-    
-    # Test 7: Division with fractional coefficients
-    print("\nTest 7: (x^2 + x + 1) / (2x + 2)")
-    print("Expected: Quotient = [0.5, 0] (0.5x), Remainder = [1]")
-    dividend = [1, 1, 1]   # x^2 + x + 1
-    divisor = [2, 2]       # 2x + 2
-    q, r = poly_divide(dividend, divisor)
-    print(f"Result:   Quotient = {q}, Remainder = {r}")
-    print("PASS" if (close_enough(q, [0.5, 0]) and close_enough(r, [1])) else "FAIL")
-
-    # Test 8: Both same degree
-    print("\nTest 8: (2x^2 + 3x + 1) / (x^2 + 1)")
-    print("Expected: Quotient = [2], Remainder = [3, -1]")
-    dividend = [2, 3, 1]   # 2x^2 + 3x + 1
-    divisor = [1, 0, 1]    # x^2 + 1
-    q, r = poly_divide(dividend, divisor)
-    print(f"Result:   Quotient = {q}, Remainder = {r}")
-    print("PASS" if (close_enough(q, [2]) and close_enough(r, [3, -1])) else "FAIL")
-    
-    # Test 9: Dividing by itself
-    print("\nTest 9: (x^2 + 2x + 1) / (x^2 + 2x + 1)")
-    print("Expected: Quotient = [1], Remainder = [0]")
-    dividend = [1, 2, 1]   # x^2 + 2x + 1
-    divisor = [1, 2, 1]    # x^2 + 2x + 1
-    q, r = poly_divide(dividend, divisor)
-    print(f"Result:   Quotient = {q}, Remainder = {r}")
-    print("PASS" if (close_enough(q, [1]) and close_enough(r, [0])) else "FAIL")
-    
-    # Test 10: Long division
-    print("\nTest 10: (x^4 - 1) / (x - 1)")
-    print("Expected: Quotient = [1, 1, 1, 1] (x^3 + x^2 + x + 1), Remainder = [0]")
-    dividend = [1, 0, 0, 0, -1]  # x^4 - 1
-    divisor = [1, -1]            # x - 1
-    q, r = poly_divide(dividend, divisor)
-    print(f"Result:   Quotient = {q}, Remainder = {r}")
-    print("PASS" if (close_enough(q, [1, 1, 1, 1]) and close_enough(r, [0])) else "FAIL")
-    
-    # Test 11: Negative coefficients
-    print("\nTest 11: (-x^2 + 4) / (x + 2)")
-    print("Expected: Quotient = [-1, 2] (-x + 2), Remainder = [0]")
-    dividend = [-1, 0, 4]  # -x^2 + 4
-    divisor = [1, 2]       # x + 2
-    q, r = poly_divide(dividend, divisor)
-    print(f"Result:   Quotient = {q}, Remainder = {r}")
-    print("PASS" if (close_enough(q, [-1, 2]) and close_enough(r, [0])) else "FAIL")
-    
-    # Test 12: Zero dividend
-    print("\nTest 12: (0) / (x + 1)")
-    print("Expected: Quotient = [0], Remainder = [0]")
-    dividend = [0]         # 0
-    divisor = [1, 1]       # x + 1
-    q, r = poly_divide(dividend, divisor)
-    print(f"Result:   Quotient = {q}, Remainder = {r}")
-    print("PASS" if (close_enough(q, [0]) and close_enough(r, [0])) else "FAIL")
-    
-    print("\n" + "=" * 60)
-
-def close_enough(list1, list2, tolerance=1e-9):
-    """Check if two lists are close enough (for floating point comparison)"""
-    if len(list1) != len(list2):
-        return False
-    return all(abs(a - b) < tolerance for a, b in zip(list1, list2))
-
-# Run all tests
-#test_poly_divide()
+total = 0
 
 try:
     with open(file_path, 'r') as file:
@@ -280,6 +152,7 @@ try:
             id_ranges = [[int(x) for x in str] for str in id_ranges]
 
             for id_range in id_ranges:
+                print(f"Range: {id_range}")
                 for num in range(id_range[0],id_range[1]+1):
                     
                     # Can't have repeated digits if only one digit
@@ -289,17 +162,10 @@ try:
                     num_str = str(num)
                     N = len(num_str)
 
- #                   if N % 2 == 0: # The even case is really easy to handle
- #                       str_L = num_str[0:N//2]
- #                       str_R = num_str[N//2:]
- #                       if str_L == str_R:
- #                           total += int(str_L)
- #                       continue
-
-                    for n in range(2,N):
+                    for n in range(2,N+1):
                         k = N/n
                         
-                        if k < 0: # I would be testing for code shorter then a digit
+                        if k < 0: # I would be testing for code shorter then a digit, time to test the next number
                             break
                         elif k != int(k): # I would be testing for a code that isn't a whole digit
                             continue
@@ -314,8 +180,9 @@ try:
                         Q, R = poly_divide(S,C)
 
                         if R == [0]:
-                            print(f"N:{N}\t n: {n}\t k: {k}\t C: {C}\t\t S: {S}\t\t Q: {Q}\t\t R: {R}")
+                            print(f"\t{num}")
                             total += num
+                            break
 
 except Exception as e:
     print(f"An error occurred: {e}")
