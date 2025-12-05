@@ -11,7 +11,7 @@ try:
             pressident = int(line[0])
             vp = int(line[1])
 
-            for index in range(2,len(line)-1):
+            for index in range(1,len(line)-1):
                 candidate = int(line[index])
 
                 if candidate > pressident: # Tens is bigger, so number bigger, assume index after as vp
@@ -27,9 +27,8 @@ try:
 
             total += pressident*10 + vp
             line_count += 1
-            print(f"P: {pressident}\t VP: {vp}\t Total: {total} \t Line Number: {line_count}")
+            print(f"P:{pressident} VP:{vp}\t Total: {total} \t Line Number: {line_count-1}")
         
-
 except Exception as e:
     print(f"An error occurred: {e}")
 

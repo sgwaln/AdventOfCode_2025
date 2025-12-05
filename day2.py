@@ -188,5 +188,5 @@ except Exception as e:
     print(f"An error occurred: {e}")
 
 print("-"*60)
-print(f"{" "*10} TOTAL: {total}")
+print(f"{' '*10} TOTAL: {total}")
 print("-"*60)
