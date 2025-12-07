@@ -1,4 +1,4 @@
-file_path = "day6_test.txt"
+file_path = "day6_input.txt"
 
 total = 0
 
@@ -28,13 +28,45 @@ print(f"total = {total}")
 total = 0
 with open(file_path, 'r') as file:
     grid = file.read().split('\n')
-    print(grid)
-    print()
-    print([row.split(' ') for row in grid])
-    print()
-    grid = [row.strip() for row in grid]
-    grid = [row.split() for row in grid]
-    print(grid)
+    grid = [[char for char in word] for word in grid]
+    
+    row_len = max([len(row) for row in grid])
+    for row in grid: # Now grid is an actual grid that preserved text jutify
+        while len(row) < row_len:
+            row.append('')
 
+    product = 1
+    op = ''
+
+    for row in  range(row_len):
+
+        operand = grid[-1][row]
+        if operand in operations:
+            
+            if op == '*':
+                total += product
+
+            op = operand
+            print(f"Next operation {op}, Current Total {total}")
+            product = 1
+
+        number = [int(digit) for digit in [grid[x][row] for x in range(0,len(grid)-1)] if digit != '' and digit != ' ']
+
+        if number == []:
+            continue
+
+        num = 0
+        for i in range(0,len(number)):
+            num += number[-(i+1)] * 10**i
+
+        if op == '+':
+            total += num
+        elif op == '*':
+            product *= num
+
+    if op == '*':
+        total += product
+    elif op == '+':
+        total += num
 
 print(f"total = {total}")
