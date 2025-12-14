@@ -104,7 +104,7 @@ with open(file_path, 'r') as file:
     visted = set()
     connections = []
 
-    for i in range(number_of_circuits):
+    for i in range(number_of_connections):
         # Check if any unvisited remain
         unvisited_vals = [val for j, val in enumerate(distance_vec) if j not in visted]
         if not unvisited_vals:
@@ -119,7 +119,6 @@ with open(file_path, 'r') as file:
     circuits = find_clusters_from_connections(connections)
     lengths = [len(circuit) for circuit in circuits]
     lengths.sort(reverse=True)
-    print(lengths)
-    print(lengths[0:number_of_connections])
-    print(math.prod(lengths[-1:-4:-1]))
+    print(lengths[0:number_of_circuits])
+    print(math.prod(lengths[0:number_of_circuits]))
     
