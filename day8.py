@@ -1,8 +1,8 @@
-import numpy as np
 import math
-file_path = "day8_test.txt"
 
-number_of_connections = 10
+file_path = "day8_input.txt"
+
+number_of_connections = 1000
 number_of_circuits = 3
 
 def find_clusters_from_neigbhoors(nearest_neigboors):
@@ -75,50 +75,58 @@ def find_clusters_from_connections(connections):
     
     return clusters
 
-with open(file_path, 'r') as file:
+def find_distance_sqrd(vec_1, vec_2):
+    if len(vec_1) != len(vec_2):
+        print("ERROR, vectors not same size")
+        return "ERROR"
+    distance_sqr = sum((a - b)**2 for a, b in zip(vec_1, vec_2))
+    return distance_sqr
 
-    coords = [tuple(int(num) for num in line.split(',', 3)) for line in file]
+def find_min(list_of_lists, exclude=None,skip_rows=None):
+    min_value, min_row, min_col = min(
+        (value, i, j)
+        for i, sublist in enumerate(list_of_lists)
+        if i not in skip_rows
+        for j, value in enumerate(sublist)
+        if value != exclude
+    )
+    return min_value, min_row, min_col
 
-    nearest_neigboors = []
-    for i in range(0,len(coords)):
-        i_vec = coords[i]
-        distance_vec = []
-        
-        for j in range(0,len(coords)):
-            
-            if i == j:
-                continue
+coords = [tuple(int(num) for num in line.split(',', 3)) for line in open(file_path, 'r') ]
+number_of_breakers = len(coords)
+distance_matrix = [[0] * number_of_breakers for _ in range(number_of_breakers)]
 
-            j_vec = coords[j]
-            range_vec = [i_vec[k] - j_vec[k] for k in range(3)]
-            distance_sqr = sum([dim**2 for dim in range_vec])
-            distance_vec.append(distance_sqr)
+print("Step 1: Calculating distance matrix")
+for i in range(number_of_breakers):
+    for j in range(number_of_breakers):
+        distance_matrix[i][j] = find_distance_sqrd(coords[i],coords[j])
 
-        min_index = distance_vec.index(min(distance_vec))
-        if min_index >= i: # Means it was appending after I skipped repeat case, so I have to correct for that
-            min_index += 1
-        
-        nearest_neigboors.append(min_index)
-        
-    # finding the 10 nearest connections and clustering those
-    visted = set()
-    connections = []
+print(f"Step 2: Finding {number_of_connections} shortest connections") # This is incredibly slow
+visited = set()
+connections = [[0]*2 for _ in range(number_of_connections)]
+visited_pairs = set() # The matrix is symetrical, the distance to 1 from 2 is the same as 2 to 1, so I need to not include both
 
-    for i in range(number_of_connections):
-        # Check if any unvisited remain
-        unvisited_vals = [val for j, val in enumerate(distance_vec) if j not in visted]
-        if not unvisited_vals:
-            break
-        
-        min_val = min(unvisited_vals)
-        min_index = distance_vec.index(min_val)
-        neighbor_index = nearest_neigboors[min_index]
-        visted.add(min_index)
-        connections.append([min_index, neighbor_index])
+for i in range(number_of_connections):
+    min_val, breaker_index, neighbor_index = min(
+        (value, row_idx, col_idx)
+        for row_idx, row in enumerate(distance_matrix)
+        if row_idx not in visited
+        for col_idx, value in enumerate(row)
+        if value != 0
+        and (row_idx, col_idx) not in visited_pairs
+        and (col_idx, row_idx) not in visited_pairs  # Check reverse too
+    )
+    
+    visited.add(breaker_index)
+    visited_pairs.add((breaker_index, neighbor_index))
+    visited_pairs.add((neighbor_index, breaker_index))  # Add both directions
+    connections[i] = [breaker_index, neighbor_index]
 
-    circuits = find_clusters_from_connections(connections)
-    lengths = [len(circuit) for circuit in circuits]
-    lengths.sort(reverse=True)
-    print(lengths[0:number_of_circuits])
-    print(math.prod(lengths[0:number_of_circuits]))
+print("Step 3: Form connections into circuits")
+circuits = find_clusters_from_connections(connections)
+lengths = [len(circuit) for circuit in circuits]
+lengths.sort(reverse=True)
+
+print(f"Step 4: Product of the number of breakers in {number_of_circuits} largest circuits")
+print(f"\tOutput: {math.prod(lengths[0:number_of_circuits])}") # Not 14196
     
