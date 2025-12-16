@@ -17,14 +17,16 @@ def vertex_check(vert):
 
 def check_edges(verts):
     verts = np.array(verts)
+
+    # The degenerte case where rect is 1xN or Nx1
     if (np.array_equal(verts[0], verts[1]) and np.array_equal(verts[2], verts[3]) or 
         np.array_equal(verts[0], verts[3]) and np.array_equal(verts[1], verts[2])):
         return poly.contains_points(verts).all()
     
-    x_L = max(verts[[0,2], 0]) - 0.1
-    x_R = min(verts[[0,2], 0]) + 0.1
-    y_U = min(verts[[0,2], 1]) + 0.1
-    y_D = max(verts[[0,2], 1]) - 0.1
+    x_L = max(verts[[0,2], 0]) - 0.1 # X cord just left of right edge
+    x_R = min(verts[[0,2], 0]) + 0.1 # X cord just right of left edge
+    y_U = min(verts[[0,2], 1]) + 0.1 # Y cord just up of bottom edge
+    y_D = max(verts[[0,2], 1]) - 0.1 # Y cord just down of top edge
     
     # Build all points at once for batch checking
     points = []
@@ -41,11 +43,17 @@ def check_edges(verts):
     if len(points) == 0:
         return True
     
-    # Batch check all points at once - MUCH faster
+    # Batch check all points at once - MUCH faster then poly.contains_point or so I was told
     return poly.contains_points(points).all()
 
 max_area = 0
 best_verts = None
+
+# An output from an antempt, but was not the awnser, but look valid
+# Max Area: 1289423295
+# Vertices: [94553 48602] - [ 4353 34308]
+max_area = 1289423295
+best_verts = [[94553,48602],[ 4353,34308]]
 
 # Sort vertices to skip symmetric checks
 for i, vert_0 in enumerate(vertices):
